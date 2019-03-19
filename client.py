@@ -1,5 +1,7 @@
 from socket import socket, AF_INET, SOCK_STREAM
-from time import sleep
+from time import sleep, time
+import sys
+import select
 
 
 class Client:
@@ -22,11 +24,18 @@ uname = input()[:50]
 s.sendall(uname.encode())
 data = s.recv(1024)
 print(data)
-for _ in range(5):
+for i in range(5):
     question = s.recv(1024)
     print(question)
-    print('Provide an answer.')
-    answer = input()[:2]
+    print('Provide an answer in a minute!')
+    i, o, e = select.select([sys.stdin], [], [], 10)
+    if (i):
+        print("You said", sys.stdin.readline().strip())
+        answer = sys.stdin.readline().strip()
+    else:
+        print("Timeout for question #{} !".format(i))
+        answer = '#T'
+
     s.sendall(answer.encode())
     sleep(0.1)
 bye = s.recv(1024)
