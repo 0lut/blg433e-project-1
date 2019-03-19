@@ -29,4 +29,6 @@ for _ in range(5):
     answer = input()[:2]
     s.sendall(answer.encode())
     sleep(0.1)
+bye = s.recv(1024)
+print(bye)
 s.close()

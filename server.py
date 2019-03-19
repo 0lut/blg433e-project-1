@@ -1,12 +1,13 @@
 from socket import socket, AF_INET, SOCK_STREAM
 from threading import Thread
+import time
 
 
 class Server:
     def __init__(self, port):
         self.clients = set()
         self.questions = ['1)', '2)', '3)', '4)', '5)']
-        self.answers = ['a', 'b', 'c', 'd', 'a']
+        self.answers = [b'a', b'b', b'c', b'd', b'a']
         with socket(AF_INET, SOCK_STREAM) as s:
             self.socket = s
             self.socket.bind(('localhost', port))
@@ -25,12 +26,20 @@ class Server:
         with conn:
             for question in self.questions:
                 client.conn.sendall(question.encode())
+                send_timestamp = time.time()
                 data = client.conn.recv(2)
                 if data == b'':
+                    print('Client is exiting... ', address)
                     break
-                print('Cevap geldi:', data)
+                print('Answer from client ({}):'.format(address), data)
                 client.answer.append(data)
-        print('Client left: {}'.format(address))
+            score = sum(map(lambda tup: tup[0] == tup[1],
+                        zip(self.answers, client.answer)))
+            
+            client.conn.sendall('Your score: {}'.format(score).encode())
+
+        print('Client ({}) left with the score: {}'.format(address, score))
+
     def listen_connections(self):
         while True:
             conn, address = self.socket.accept()
