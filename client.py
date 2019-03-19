@@ -1,21 +1,8 @@
-from socket import socket, AF_INET, SOCK_STREAM
-from time import sleep, time
-import sys
 import select
-
-
-class Client:
-    def __init__(self, port):
-        with socket(AF_INET, SOCK_STREAM) as s:
-            while 22:
-                self.socket = s
-                self.socket.connect(('localhost', port))
-                conn, addr = self.socket.accept()
-                conn.sendall(b'Hellooo')
-                conn.recv(1024)
-
-
 import socket
+import sys
+from time import sleep
+
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.connect(('localhost', 8888))
 data = s.recv(1024)
