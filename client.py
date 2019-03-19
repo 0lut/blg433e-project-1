@@ -25,5 +25,5 @@ for ix in range(5):
     s.sendall(answer.encode())
     sleep(0.1)
 bye = s.recv(1024)
-print(bye)
+print(bye.decode())
 s.close()
