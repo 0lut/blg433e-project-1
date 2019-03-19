@@ -20,7 +20,9 @@ class Server:
                                 b) Helps in establishing a session between processes of different stations.\n
                                 c) Decides the physical path that should be taken by the data as per the network conditions.\n
                                 d) Serves as the mediator between Users and processes of applications.''',
-                          '5)']
+                          '''5) Choose the case where UDP can be handy. \n
+                                a) Multimedia streaming \t b) E-mail application\n
+                                c) P2P file sharing application \t d) Telnet/SSH client''']
         self.answers = [b'a', b'd', b'c', b'd', b'a']
         with socket(AF_INET, SOCK_STREAM) as s:
             self.socket = s
