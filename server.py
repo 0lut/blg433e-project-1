@@ -18,7 +18,7 @@ class Server:
         print('Received client with address: {}'.format(address))
         conn.sendall(b'Please provide a username\n')
         username = conn.recv(1024)
-        welcome_msg = 'Welcome {} \n'.format(str(username))
+        welcome_msg = 'Welcome {} \n'.format(username.decode())
         conn.sendall(welcome_msg.encode())
         client = Client(conn, username)
 
@@ -31,14 +31,14 @@ class Server:
                 if data == b'':
                     print('Client is exiting... ', address)
                     break
-                print('Answer from client ({}):'.format(address), data)
+                print('Answer from client ({}):'.format(address), data.decode())
                 client.answer.append(data)
             score = sum(map(lambda tup: tup[0] == tup[1],
-                        zip(self.answers, client.answer)))
-            
-            client.conn.sendall('Your score: {}'.format(score).encode())
+                            zip(self.answers, client.answer)))
 
-        print('Client ({}) left with the score: {}'.format(address, score))
+            client.conn.sendall('Your score: {}/5'.format(score).encode())
+
+        print('Client ({}) left with the score: {}/5'.format(address, score))
 
     def listen_connections(self):
         while True:

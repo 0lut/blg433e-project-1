@@ -19,21 +19,20 @@ import socket
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.connect(('localhost', 8888))
 data = s.recv(1024)
-print(data)
+print(data.decode())
 uname = input()[:50]
 s.sendall(uname.encode())
 data = s.recv(1024)
-print(data)
-for i in range(5):
+print(data.decode())
+for ix in range(5):
     question = s.recv(1024)
-    print(question)
+    print(question.decode())
     print('Provide an answer in a minute!')
-    i, o, e = select.select([sys.stdin], [], [], 10)
+    i, _, _ = select.select([sys.stdin], [], [], 10)
     if (i):
-        print("You said", sys.stdin.readline().strip())
         answer = sys.stdin.readline().strip()
     else:
-        print("Timeout for question #{} !".format(i))
+        print("Timeout for question #{} !".format(ix+1))
         answer = '#T'
 
     s.sendall(answer.encode())
