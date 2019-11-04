@@ -2,6 +2,20 @@ from socket import socket, AF_INET, SOCK_STREAM
 from threading import Thread
 import time
 
+class Client:
+    def __init__(self, conn, address, username):
+        self.conn = conn
+        self.state = 0
+        self.username = username
+        self.address = address
+        self.answer = []
+
+    def __repr__(self):
+        return 'Client name: {}, address: {}'.format(self.username, self.address)
+
+    def __str__(self):
+        return self.__repr__()
+
 
 class Server:
     def __init__(self, port):
